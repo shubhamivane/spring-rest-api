@@ -29,6 +29,7 @@ public class UserService {
 			return true;
 		}
 		catch(Exception e) {
+			System.out.print(e);
 			return false;
 		}
 	}
