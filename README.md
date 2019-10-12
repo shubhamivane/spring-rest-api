@@ -1,6 +1,6 @@
-## spring-rest-api
+# spring-rest-api
 Rest api is developed for app like TrueCaller to manage the contact numbers. Link for app is [https://truecaller-spring.herokuapp.com](https://truecaller-spring.herokuapp.com).
-# Endpoints
+## Endpoints
  * POST - Create User [https://truecaller-spring.herokuapp.com/user](https://truecaller-spring.herokuapp.com)
  ```
  	JSON Payload
@@ -31,6 +31,14 @@ Rest api is developed for app like TrueCaller to manage the contact numbers. Lin
 	Response Body
 	{ "message": "Name is updated successfully.", "status": "OK" }
  ```
- * 
+ * DELETE - Delete User [https://truecaller-spring.herokuapp.com/user/{id}](https://truecaller-spring.herokuapp.com/user/226fb86aad4e4982bc04924a7eeb857e)
+ ```
+ 	JSON Payload
+	{ "accessToken": "f96e1e18-753f-485a-8af6-bc42063f053d" }
+	
+	Response Body
+ 	{ "message": "User with df25a70eae74453a8323d40644978ea7 deleted successfully.", "status": "OK" }
+ ```
+
  
  	
