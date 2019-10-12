@@ -64,18 +64,23 @@ public class UserController {
 	public ResponseEntity<Object> createUser(@RequestBody Map<String, String> payload){
 		String[] requiredParam = {"name", "phoneNo", "password"};
 		PayloadVerifier payloadVerifier = new PayloadVerifier(payload, requiredParam);
+		ResponseParser response = new ResponseParser();
 		if(!payloadVerifier.isValid()) {
-			ResponseParser response = new ResponseParser("Parameters insufficient for operation.", "FAILED");
+			response.setMessage("Parameters insufficient for operation.");
+			response.setStatus("FAILED");
 			return new ResponseEntity<Object>(response, HttpStatus.NOT_ACCEPTABLE);
 		}
 		User user = new User(payload.get("name"), payload.get("phoneNo"), payload.get("password"));
 		boolean status = userService.createUser(user);
 		if(status) {
-			return new ResponseEntity<Object>(user, HttpStatus.CREATED);
+			response.setMessage("User account created.");
+			response.setStatus("OK");
+			return new ResponseEntity<Object>(response, HttpStatus.CREATED);
 		}
 		else {
-			ResponseParser error = new ResponseParser("Something went wrong.", "FAILED");
-			return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
+			response.setMessage("Something went wrong.");
+			response.setStatus("FAILED");
+			return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
 	
