@@ -35,12 +35,12 @@ public class ContactController {
 			ResponseParser response = new ResponseParser("Parameters insufficient for operation.", "FAILED");
 			return new ResponseEntity<Object>(response, HttpStatus.NOT_ACCEPTABLE);
 		}		
-		if(userService.authenticateUser(userId, payload.get("accessToken"))) {
+		if(userService.authorizeUser(userId, payload.get("accessToken"))) {
 			List<Contact> contactListOfUser = contactService.getContactListOfUser(userId);
 			return new ResponseEntity<Object>(contactListOfUser, HttpStatus.OK);
 		}
 		else {
-			ResponseParser response = new ResponseParser("User authentication failed.", "FAILED");
+			ResponseParser response = new ResponseParser("User authorization failed", "FAILED");
 			return new ResponseEntity<Object>(response, HttpStatus.UNAUTHORIZED);
 		}
 	}
@@ -53,7 +53,7 @@ public class ContactController {
 			ResponseParser response = new ResponseParser("Parameters insufficient for operation.", "FAILED");
 			return new ResponseEntity<Object>(response, HttpStatus.NOT_ACCEPTABLE);
 		}
-		if(userService.authenticateUser(userId, payload.get("accessToken"))) {
+		if(userService.authorizeUser(userId, payload.get("accessToken"))) {
 			Contact contact = new Contact(payload.get("name"), payload.get("phoneNo"), userId);
 			boolean status = contactService.createContact(contact);
 			if(status) {
@@ -79,7 +79,7 @@ public class ContactController {
 			return new ResponseEntity<Object>(response, HttpStatus.NOT_ACCEPTABLE);
 		}
 		ResponseParser response = new ResponseParser();
-		if(userService.authenticateUser(userId, payload.get("accessToken"))) {
+		if(userService.authorizeUser(userId, payload.get("accessToken"))) {
 			Contact contact = contactService.getContact(contactId);
 			boolean status = contactService.deleteContact(contactId);
 			if(status) {
@@ -94,7 +94,7 @@ public class ContactController {
 			}
 		}
 		else {
-			response.setMessage("User authentication failed.");
+			response.setMessage("User authorization failed");
 			response.setStatus("FAILED");
 			return new ResponseEntity<Object>(response, HttpStatus.UNAUTHORIZED);
 		}
@@ -109,7 +109,7 @@ public class ContactController {
 			return new ResponseEntity<Object>(response, HttpStatus.NOT_ACCEPTABLE);
 		}
 		ResponseParser response = new ResponseParser();
-		if(userService.authenticateUser(userId, payload.get("accessToken"))) {
+		if(userService.authorizeUser(userId, payload.get("accessToken"))) {
 			Contact contact = contactService.getContact(contactId);
 			if(contact != null) {
 				return new ResponseEntity<Object>(contact, HttpStatus.OK);
@@ -121,7 +121,7 @@ public class ContactController {
 			}
 		}
 		else {
-			response.setMessage("User authentication failed.");
+			response.setMessage("User authorization failed");
 			response.setStatus("FAILED");
 			return new ResponseEntity<Object>(response, HttpStatus.UNAUTHORIZED);
 		}
@@ -155,7 +155,7 @@ public class ContactController {
 			return new ResponseEntity<Object>(response, HttpStatus.NOT_ACCEPTABLE);
 		}
 		ResponseParser response = new ResponseParser();
-		if(userService.authenticateUser(userId, payload.get("accessToken"))) {
+		if(userService.authorizeUser(userId, payload.get("accessToken"))) {
 			Contact contact = contactService.searchPhoneNoInUserContactList(userId, payload.get("phoneNo"));
 			if(contact != null) {
 				return new ResponseEntity<Object>(contact, HttpStatus.OK);
@@ -167,7 +167,7 @@ public class ContactController {
 			}
 		}
 		else {
-			response.setMessage("User authentication failed.");
+			response.setMessage("User authorization failed");
 			response.setStatus("FAILED");
 			return new ResponseEntity<Object>(response, HttpStatus.UNAUTHORIZED);
 		}

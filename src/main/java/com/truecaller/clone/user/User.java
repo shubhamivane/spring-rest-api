@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Table(name="User")
 @Entity
 public class User {
@@ -21,6 +23,7 @@ public class User {
 	private String phoneNo;
 	
 	@Column(name="password")
+	@JsonIgnore
 	private String password;
 	
 	//Refer to this : https://stackoverflow.com/questions/50567041/spring-boot-jpa-unknown-column-in-field-list/50568150
@@ -81,6 +84,10 @@ public class User {
 
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
+	}
+	
+	public void changeAccessToken() {
+		this.accessToken = UUID.randomUUID().toString();
 	}
 
 }

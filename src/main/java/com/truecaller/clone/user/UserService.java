@@ -18,6 +18,11 @@ public class UserService {
 		return user.orElse(null);
 	}
 	
+	public User authenticateUser(String phoneNo, String password) {
+		User user = userRepository.findByPhoneNoAndPassword(phoneNo, password);
+		return user;
+	}
+	
 	public boolean createUser(User user) {
 		try {
 			userRepository.save(user);
@@ -38,7 +43,7 @@ public class UserService {
 		}
 	}
 	
-	public boolean authenticateUser(String id, String accessToken) {
+	public boolean authorizeUser(String id, String accessToken) {
 		User user = userRepository.findById(id).orElse(null);
 		if(user.equals(null)) {
 			return false;

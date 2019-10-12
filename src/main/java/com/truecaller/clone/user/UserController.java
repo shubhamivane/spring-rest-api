@@ -37,6 +37,29 @@ public class UserController {
 		}
 	}
 	
+	@PostMapping(path="/accesstoken", consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Object> getAccessToken(@RequestBody Map<String, String> payload){
+		String[] requiredParam = {"phoneNo", "password"};
+		PayloadVerifier payloadVerifier = new PayloadVerifier(payload, requiredParam);
+		if(!payloadVerifier.isValid()) {
+			ResponseParser response = new ResponseParser("Parameters insufficient for operation.", "FAILED");
+			return new ResponseEntity<Object>(response, HttpStatus.NOT_ACCEPTABLE);
+		}
+		User user = userService.authenticateUser(payload.get("phoneNo"), payload.get("password"));
+		if(user != null) {
+			user.changeAccessToken();
+			if(userService.updateUser(user)) {
+				return new ResponseEntity<Object>(user, HttpStatus.OK);
+			}
+			else {
+				ResponseParser response = new ResponseParser("Something went wrong. Try againg later.", "FAILED");
+				return new ResponseEntity<Object>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
+		ResponseParser response = new ResponseParser("Phone number or password is incorrect.", "FAILED");
+		return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
+	}
+	
 	@PostMapping(path="/user", consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> createUser(@RequestBody Map<String, String> payload){
 		String[] requiredParam = {"name", "phoneNo", "password"};
@@ -59,7 +82,7 @@ public class UserController {
 	@PostMapping(path="/user/{id}", consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> updateUser(@PathVariable String id, @RequestBody Map<String, String> payload){
 		ResponseParser response = new ResponseParser();
-		if(userService.authenticateUser(id, payload.get("accessToken"))) {
+		if(userService.authorizeUser(id, payload.get("accessToken"))) {
 			if(payload.containsKey("name") && payload.containsKey("new_name")) {
 				User user = userService.getUser(id);
 				user.setName(payload.get("new_name"));
@@ -92,7 +115,7 @@ public class UserController {
 			}
 		}
 		else {
-			response = new ResponseParser("User authentication failed.", "FAILED");
+			response = new ResponseParser("User authorization failed", "FAILED");
 			return new ResponseEntity<Object>(response, HttpStatus.UNAUTHORIZED);
 		}
 		if(response.getStatus().equals("OK")) {
@@ -113,7 +136,7 @@ public class UserController {
 			response.setStatus("FAILED");
 			return new ResponseEntity<Object>(response, HttpStatus.NOT_ACCEPTABLE);
 		}
-		if(userService.authenticateUser(id, payload.get("accessToken"))){
+		if(userService.authorizeUser(id, payload.get("accessToken"))){
 			boolean status = userService.deleteUser(id);
 			if(status) {
 				response.setMessage("User with " + id + " deleted successfully.");
@@ -127,7 +150,7 @@ public class UserController {
 			}
 		}
 		else {
-			response.setMessage("User authentication failed.");
+			response.setMessage("User authorization failed");
 			response.setStatus("FAILED");
 			return new ResponseEntity<Object>(response, HttpStatus.UNAUTHORIZED);
 		}
