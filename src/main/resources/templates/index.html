@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Truecaller Spring App</title>
+</head>
+<body>
+	
+	<h1 id="springrestapi">spring-rest-api</h1>
+	
+	<p>Rest api is developed for app like TrueCaller to manage the contact numbers. Link for app is <a href="https://truecaller-spring.herokuapp.com">https://truecaller-spring.herokuapp.com</a>.</p>
+	
+	<h2 id="endpoints">Endpoints</h2>
+	
+	<ul>
+		<li>POST - Create user <a href="https://truecaller-spring.herokuapp.com">https://truecaller-spring.herokuapp.com/user</a></li>
+	</ul>
+	
+	<pre>
+		<code>JSON Payload
+			{ "name": "shubham", "phoneNo": "123456789", "password": "123456" }
+	
+			Response Body
+			{ "message": "User account created.", "status": "OK" }
+		</code>
+	</pre>
+	
+	<ul>
+	<li>POST - Get access token <a href="https://truecaller-spring.herokuapp.com/accesstoken">https://truecaller-spring.herokuapp.com/accesstoken</a></li>
+	</ul>
+	
+	<pre>
+		<code>JSON Payload
+			{ "phoneNo": "123456789", "password": "123456" }
+	
+			Response Body
+			{ "id": "226fb86aad4e4982bc04924a7eeb857e", "name": "shubham", "phoneNo": "123456789", 
+	    	"accessToken": "b49910db-4053-41f2-9a66-ff102d33d840" }
+		</code>
+	</pre>
+	
+	<ul>
+	<li>GET - Get user data <a href="https://truecaller-spring.herokuapp.com/user/cc82f526ab5644d7b0843f03801d6285">https://truecaller-spring.herokuapp.com/user/{id}</a></li>
+	</ul>
+	
+	<pre><code>Response Body
+	{ "name": "shubham", "phoneNo": "123456789", "id": "cc82f526ab5644d7b0843f03801d6285" }
+	</code></pre>
+	
+	<ul>
+	<li>POST - Update user data <a href="https://truecaller-spring.herokuapp.com/user/cc82f526ab5644d7b0843f03801d6285">https://truecaller-spring.herokuapp.com/user/{id}</a></li>
+	</ul>
+	
+	<pre><code>JSON Payload
+	{ "name": "ankit", "new_name": "ankit1", "accessToken": "f96e1e18-753f-485a-8af6-bc42063f053d" }
+	
+	Response Body
+	{ "message": "Name is updated successfully.", "status": "OK" }
+	</code></pre>
+	
+	<ul>
+	<li>DELETE - Delete user <a href="https://truecaller-spring.herokuapp.com/user/cc82f526ab5644d7b0843f03801d6285">https://truecaller-spring.herokuapp.com/user/{id}</a></li>
+	</ul>
+	
+	<pre><code>JSON Payload
+	{ "accessToken": "f96e1e18-753f-485a-8af6-bc42063f053d" }
+	
+	Response Body
+	{ "message": "User with df25a70eae74453a8323d40644978ea7 deleted successfully.", "status": "OK" }
+	</code></pre>
+	
+	<ul>
+	<li>POST - Create contact <a href="https://truecaller-spring.herokuapp.com/user/cc82f526ab5644d7b0843f03801d6285/contact/">https://truecaller-spring.herokuapp.com/user/{id}/contact/</a></li>
+	</ul>
+	
+	<pre><code>JSON Payload
+	{ "accessToken": "66de002b-25c4-45b2-8530-fd5ecb1b4583", "name": "ankit", "phoneNo": "9144212526" }
+	
+	Response Body
+	{ "id": 1, "name": "ankit", "phone_no": "9144212526" }
+	</code></pre>
+	
+	<ul>
+	<li>GET - Get contact list of user <a href="https://truecaller-spring.herokuapp.com/user/cc82f526ab5644d7b0843f03801d6285/contact/">https://truecaller-spring.herokuapp.com/user/{id}/contact/</a></li>
+	</ul>
+	
+	<pre><code>JSON Payload
+	{ "accessToken": "66de002b-25c4-45b2-8530-fd5ecb1b4583"}
+	
+	Response Body
+	[
+	    { "id": 1, "name": "ankit", "phone_no": "9144212526" },
+	    { "id": 2, "name": "virat", "phone_no": "12345" }
+	]
+	</code></pre>
+	
+	<ul>
+	<li>GET - Get contact from user's contact list <a href="https://truecaller-spring.herokuapp.com/user/cc82f526ab5644d7b0843f03801d6285/contact/1">https://truecaller-spring.herokuapp.com/user/{user<em>id}/contact/{contact</em>id}</a></li>
+	</ul>
+	
+	<pre><code>JSON Payload
+	{ "accessToken": "66de002b-25c4-45b2-8530-fd5ecb1b4583" }
+	
+	Response Body
+	{ "id": 1, "name": "ankit", "phone_no": "9144212526" }
+	</code></pre>
+	
+	<ul>
+	<li>DELETE - Delete contact from user's contact list <a href="https://truecaller-spring.herokuapp.com/user/cc82f526ab5644d7b0843f03801d6285/contact/1">https://truecaller-spring.herokuapp.com/user/{id}/contact/{id}</a></li>
+	</ul>
+	
+	<pre><code>JSON Payload
+	{ "accessToken": "66de002b-25c4-45b2-8530-fd5ecb1b4583" }
+	
+	Response Body
+	{ "message": "Contact with Phone number 12345 is deleted successfully.", "status": "OK" }
+	</code></pre>
+	
+	<ul>
+	<li>POST - Search contact in Database <a href="https://truecaller-spring.herokuapp.com/search">https://truecaller-spring.herokuapp.com/search</a></li>
+	</ul>
+	
+	<pre><code>JSON Payload
+	{ "phoneNo": "9144212526" }
+	
+	Response Body
+	{ "id": 1, "name": "ankit", "phone_no": "9144212526" }
+	</code></pre>
+	
+	<ul>
+	<li>POST - Search contact in user's contact list <a href="https://truecaller-spring.herokuapp.com/user/cc82f526ab5644d7b0843f03801d6285/search">https://truecaller-spring.herokuapp.com/user/{id}/search</a></li>
+	</ul>
+	
+	<pre><code>JSON Payload
+	{ "accessToken": "66de002b-25c4-45b2-8530-fd5ecb1b4583", "phoneNo": "9144212526" }
+	
+	Response Body
+	{ "id": 1, "name": "ankit", "phone_no": "9144212526" }
+	</code></pre>
+</body>
+</html>
