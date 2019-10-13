@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Table(name="tuser")
+@Table(name="user")
 @Entity
 public class User {
 	@Id
@@ -19,7 +19,7 @@ public class User {
 	@Column(name="name")
 	private String name;
 	
-	@Column(name="phoneno", nullable=false, length=200)
+	@Column(name="phoneno", nullable=false, length=200, unique=true)
 	private String phoneNo;
 	
 	@Column(name="password")
