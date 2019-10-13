@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Table(name="user")
+@Table(name="tuser")
 @Entity
 public class User {
 	@Id
