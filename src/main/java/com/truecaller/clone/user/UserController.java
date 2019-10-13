@@ -71,16 +71,21 @@ public class UserController {
 			return new ResponseEntity<Object>(response, HttpStatus.NOT_ACCEPTABLE);
 		}
 		User user = new User(payload.get("name"), payload.get("phoneNo"), payload.get("password"));
-		boolean status = userService.createUser(user);
-		if(status) {
-			response.setMessage("User account created.");
+		String message = userService.createUser(user);
+		if(message.equals("User account created.")) {
+			response.setMessage(message);
 			response.setStatus("OK");
 			return new ResponseEntity<Object>(response, HttpStatus.CREATED);
+		}
+		else if(message.equals("Phone number is already registered.")) {
+			response.setMessage(message);
+			response.setStatus("FAILED");
+			return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
 		}
 		else {
 			response.setMessage("Something went wrong.");
 			response.setStatus("FAILED");
-			return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	

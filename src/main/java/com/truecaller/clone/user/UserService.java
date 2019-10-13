@@ -3,9 +3,8 @@ package com.truecaller.clone.user;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-
-import com.truecaller.clone.user.User;
 
 @Service
 public class UserService {
@@ -23,14 +22,18 @@ public class UserService {
 		return user;
 	}
 	
-	public boolean createUser(User user) {
+	public String createUser(User user) {
 		try {
 			userRepository.save(user);
-			return true;
+			return "User account created.";
+		}
+		catch(DataIntegrityViolationException dive) {
+			System.out.println(dive);
+			return "Phone number is already registered.";
 		}
 		catch(Exception e) {
 			System.out.print(e);
-			return false;
+			return "Something went wrong.";
 		}
 	}
 	
